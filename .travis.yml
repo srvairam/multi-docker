@@ -19,5 +19,5 @@ after_success:
   - docker push srvairam/multi-client
   - docker push srvairam/multi-nginx
   - docker push srvairam/multi-server
-  - docker push srvairam/multi-worker  
+  - docker push srvairam/multi-worker 
 
