@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t srvairam/multi-docker -f ./client/Dockerfile.dev .
+
+script:
+  - docker run srvairam/multi-docker npm run test -- --coverage
+  
+after_success:
+  - docker build -t srvairam/multi-client ./client
+  - docker build -t srvairam/multi-nginx ./nginx
+  - docker build -t srvairam/multi-server ./server
+  - docker build -t srvairam/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push srvairam/multi-client
+  - docker push srvairam/multi-nginx
+  - docker push srvairam/multi-server
+  - docker push srvairam/multi-worker  
+
